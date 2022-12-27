@@ -16,14 +16,14 @@ for line in input:
 def get_max_score(scores):
     names = set(scores.keys())
     arrangements = [perm for perm in permutations(names) if perm[0] == list(names)[0]]
-    scored = [
+    scores = [
         sum(
             scores[arr[i]][arr[i - 1]] + scores[arr[i]][arr[(i + 1) % len(arr)]]
             for i in range(len(arr))
         )
         for arr in arrangements
     ]
-    return max(scored)
+    return max(scores)
 
 
 max_score = get_max_score(scores)
