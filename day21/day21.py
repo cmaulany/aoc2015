@@ -39,24 +39,20 @@ def with_none(items):
 
 
 def attack(source, target):
-    [_, source_damage, _] = source
-    [target_hit_points, target_damage, target_armor] = target
+    [hit_points, damage, armor] = target
     return [
-        source,
-        [
-            target_hit_points - max(source_damage - target_armor, 1),
-            target_damage,
-            target_armor,
-        ],
+        hit_points - max(source[1] - armor, 1),
+        damage,
+        armor,
     ]
 
 
 def fight(player, boss):
     while True:
-        [player, boss] = attack(player, boss)
+        boss = attack(player, boss)
         if boss[0] <= 0:
             return True
-        [boss, player] = attack(boss, player)
+        player = attack(boss, player)
         if player[0] <= 0:
             return False
 
@@ -82,7 +78,7 @@ valid_loadouts = [
 ]
 
 wins = [loadout for loadout in valid_loadouts if fight(equip(loadout), boss)]
-losses = [loadout for loadout in valid_loadouts if not fight(equip(loadout), boss)]
+losses = [loadout for loadout in valid_loadouts if loadout not in wins]
 
 best = min(wins, key=lambda loadout: cost(loadout))
 print(f"Answer part 1: {cost(best)}")
