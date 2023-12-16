@@ -1,5 +1,5 @@
 import re
-from itertools import product, groupby
+from itertools import product
 
 input = open("input.txt")
 boss = list(map(int, (line.split(": ")[1] for line in input.readlines())))

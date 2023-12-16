@@ -23,8 +23,8 @@ def tick(lights):
         next_lights.append([])
         for x, on in enumerate(row):
             on_neighbors = sum(
-                lights[neighbor[1]][neighbor[0]]
-                for neighbor in neighbors(lights, (x, y))
+                lights[neighbor_y][neighbor_x]
+                for neighbor_x, neighbor_y in neighbors(lights, (x, y))
             )
             next_lights[y].append((on and on_neighbors in [2, 3]) or on_neighbors == 3)
 
@@ -32,14 +32,14 @@ def tick(lights):
 
 
 def sum_after_ticks(lights, n, stuck=False):
-    for _ in range(n):
-        if stuck:
-            for x, y in product([0, 99], [0, 99]):
-                lights[y][x] = True
-        lights = tick(lights)
     if stuck:
         for x, y in product([0, 99], [0, 99]):
             lights[y][x] = True
+    for _ in range(n):
+        lights = tick(lights)
+        if stuck:
+            for x, y in product([0, 99], [0, 99]):
+                lights[y][x] = True
 
     return sum(on for row in lights for on in row)
 
